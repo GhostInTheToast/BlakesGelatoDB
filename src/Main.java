@@ -7,19 +7,27 @@ public class Main {
         String csvFile = "productsReceivedDB.csv";
 
         LogoDisplayer.display(1500);
+        CsvInitializer csv = new CsvInitializer();
+        csv.EnsureFile(csvFile);
+
+        Thread.sleep(1500);
+        GhostTechLibrary.clearScreen();
 
         int menuSelection;
         do {
             MenuDisplayer.displayMenu();
 
-            CsvInitializer csv = new CsvInitializer();
-            csv.EnsureFile(csvFile);
-
-            // open csv and get last line
+            // Go to last line to get batch number
             String lastLine = csv.getLastLine(csvFile);
 
+            if (lastLine == "") {
+                csv.appendData("0,TestProduct,TestBrand,TestStore,-200,01/31/1900");
+            }
+            lastLine = csv.getLastLine(csvFile);
+            System.out.println("The last entry was: " + lastLine);
+            GhostTechLibrary.clearScreen();
+
             int orderBatch = Integer.parseInt(lastLine.split(",")[0]);
-            // System.out.println("the order batch is " + orderBatch);
 
             String productName = "N/A";
             String productBrand = "N/A";
@@ -32,7 +40,7 @@ public class Main {
             scan.nextLine();
 
             switch (menuSelection) {
-                case 1:
+                case 1 -> {
                     orderBatch += 1;
                     do {
                         System.out.println("Enter the PRODUCT NAME (or 'q to quit to main menu'): ");
@@ -52,24 +60,12 @@ public class Main {
 
                         String newData = (orderBatch) + "," + productName + "," + productBrand + "," + storeBoughtFrom +
                                 "," + temperature + "," + date;
-                        csvFile = "productsReceivedDB.csv";
-
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile, true))) {
-                            // Append new data to the end of the file
-                            writer.newLine(); // Move to the next line (optional)
-                            writer.write(newData);
-                            writer.flush(); // Flush the writer
-                            System.out.println("Data inserted successfully: " + newData);
-                        } catch (IOException e) {
-                            System.err.println("Error while inserting data: " + e.getMessage());
-                        }
+                        csv.appendData(newData);
                     } while (!productName.equalsIgnoreCase("q"));
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     csvFile = "productsReceivedDB.csv";
                     String line = "";
-
-
                     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
                         // Read and print headers
                         // Read the header line
@@ -78,9 +74,6 @@ public class Main {
 
                         printHeader(headers);
 
-
-
-                        line = br.readLine();
 //                        System.out.printf("| %-6s | %-16s | %-10s | %-10s | %-6s | %-10s |\n",
 //                                "Batch#", "Product Name", "Prod Brand", "Store", "Temp", "Exp Date");
 
@@ -96,21 +89,21 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    break;
-                case 3:
+                    System.out.println("\n\n\nPRESS ENTER TO GO BACK TO MENU...");
+                    scan.nextLine();
+                }
+                case 3 -> {
                     System.out.println("Enter the PRODUCT NAME: ");
                     productName = scan.nextLine();
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.println("Enter the PRODUCT NAME: ");
                     productName = scan.nextLine();
-                    break;
-                case 5:
-                    System.exit(0);
-                default:
-                    System.exit(0);
-
-            };
+                }
+                case 5 -> System.exit(0);
+                default -> System.exit(0);
+            }
+            ;
         } while (menuSelection != 5);
     }
     // Method to print separator line

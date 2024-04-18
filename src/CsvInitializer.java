@@ -14,7 +14,8 @@ public class CsvInitializer {
             } else {
                 // Create the file
                 if (file.createNewFile()) {
-                    String newData = "0,productName,productBrand,storeBoughtFrom,98.6,01/31/2025\n";
+                    String newData = "Batch#,Product Name,Prod Brand,Store,Temp,Exp Date";
+
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                         // Append new data to the end of the file
                         writer.write(newData);
@@ -40,6 +41,7 @@ public class CsvInitializer {
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
+            br.readLine();
             while ((line = br.readLine()) != null) {
                 lastLine = line;
             }
@@ -47,5 +49,18 @@ public class CsvInitializer {
             e.printStackTrace();
         }
         return lastLine;
+    }
+
+    public String appendData(String data) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            // Append new data to the end of the file
+            writer.newLine(); // Move to the next line (optional)
+            writer.write(data);
+            writer.flush(); // Flush the writer
+            System.out.println("Data inserted successfully: " + data);
+        } catch (IOException e) {
+            System.err.println("Error while inserting data: " + e.getMessage());
+        }
+        return "data";
     }
 }
