@@ -15,8 +15,6 @@ public class Main {
 
         int menuSelection;
         do {
-            MenuDisplayer.displayMenu();
-
             // Go to last line to get batch number
             String lastLine = csv.getLastLine(csvFile);
 
@@ -35,9 +33,12 @@ public class Main {
             float temperature;
             String date = "N/A";
 
+            MenuDisplayer.displayMenu();
+
             Scanner scan = new Scanner(System.in);
             menuSelection = scan.nextInt();
             scan.nextLine();
+            GhostTechLibrary.clearScreen();
 
             switch (menuSelection) {
                 case 1 -> {
@@ -45,18 +46,23 @@ public class Main {
                     do {
                         System.out.println("Enter the PRODUCT NAME (or 'q to quit to main menu'): ");
                         productName = scan.nextLine();
+                        GhostTechLibrary.clearScreen();
                         if (productName.equalsIgnoreCase("q"))
                             break;
                         System.out.println("Enter the PRODUCT BRAND: ");
                         productBrand = scan.nextLine();
+                        GhostTechLibrary.clearScreen();
                         System.out.println("Enter the STORE/SUPPLIER: ");
                         storeBoughtFrom = scan.nextLine();
+                        GhostTechLibrary.clearScreen();
                         // error handling needed on temp
                         System.out.println("Enter the PRODUCT TEMPERATURE: ");
                         temperature = scan.nextFloat();
+                        GhostTechLibrary.clearScreen();
                         scan.nextLine();
                         System.out.println("Enter the PURCHASE DATE: ");
                         date = scan.nextLine();
+                        GhostTechLibrary.clearScreen();
 
                         String newData = (orderBatch) + "," + productName + "," + productBrand + "," + storeBoughtFrom +
                                 "," + temperature + "," + date;

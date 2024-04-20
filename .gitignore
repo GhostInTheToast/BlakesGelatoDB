@@ -29,3 +29,6 @@ bin/
 .DS_Store
 /.idea/
 BlakesGelatoDB.iml
+*.class
+
+*.csv
